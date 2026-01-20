@@ -1,0 +1,72 @@
+.ingredientList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+}
+
+.ingredientCard {
+  background: #333;
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
+  width: 200px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.ingredientCard:hover {
+  transform: scale(1.05);
+}
+
+.ingredientName {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.ingredientPrices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.buyPrice {
+  color: red;
+}
+
+.sellPrice {
+  color: green;
+}
+
+.grossMargin {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.grossMargin.loss {
+  color: red;
+}
+
+.grossMargin.profit {
+  color: white;
+}
+
+.addButton {
+  background: orange;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
