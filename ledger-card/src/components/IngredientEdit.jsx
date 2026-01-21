@@ -8,6 +8,8 @@ export default function IngredientEdit({ ingredient, onSave, onCancel }) {
   const [sellPrice, setSellPrice] = useState(ingredient?.sellPrice || 0);
 
   const unitCost = buyQty > 0 ? buyPrice / buyQty : 0;
+  const margin =
+    sellPrice > 0 ? ((sellPrice - unitCost) / sellPrice) * 100 : 0;
   const lastUpdated = ingredient?.updatedAt
     ? new Date(ingredient.updatedAt).toLocaleString("zh-TW")
     : "未更改";
@@ -55,7 +57,11 @@ export default function IngredientEdit({ ingredient, onSave, onCancel }) {
       </div>
       <div className="field">
         <label>單位成本（自動計算）</label>
-        <input type="text" value={new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD" }).format(unitCost)} readOnly />
+        <input
+          type="text"
+          value={new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD" }).format(unitCost)}
+          readOnly
+        />
       </div>
       <div className="field">
         <label>售出價格</label>
@@ -69,6 +75,11 @@ export default function IngredientEdit({ ingredient, onSave, onCancel }) {
       <div className="field">
         <label>上次更改日期</label>
         <div className="lastUpdated">{lastUpdated}</div>
+      </div>
+      {/* 新增：即時顯示單位成本與毛利率 */}
+      <div style={{ margin: "18px 0 8px", padding: "12px", background: "#333", borderRadius: "8px", color: "#fff" }}>
+        <div>單位成本：{new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD" }).format(unitCost)}</div>
+        <div>毛利率：{margin.toFixed(2)}%</div>
       </div>
       <div className="actions">
         <button className="btn" onClick={onCancel}>
