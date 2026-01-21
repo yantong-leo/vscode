@@ -2,11 +2,10 @@ import React from "react";
 
 export default function RecordCard({ record, onEdit, onDelete }) {
   const isIncome = record?.type === "income";
-
   const rawAmount = record?.amount;
   const numAmount = typeof rawAmount === "number" ? rawAmount : Number(rawAmount);
   const safeAmount = Number.isFinite(numAmount) ? numAmount : 0;
-  const amountFmt = new Intl.NumberFormat("zh-TW").format(safeAmount);
+  const amountFmt = new Intl.NumberFormat("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(safeAmount);
 
   const dateText = record?.date || "未填日期";
   const categoryText = record?.category || "未分類";
@@ -35,7 +34,7 @@ export default function RecordCard({ record, onEdit, onDelete }) {
         {record?.note ? (
           <div className="metaItem">
             <span className="metaLabel">備註</span>
-            <span className="metaValue">{record.note}</span>
+            <span className="metaValue" style={{ whiteSpace: "pre-line" }}>{record.note}</span>
           </div>
         ) : null}
       </div>

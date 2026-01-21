@@ -2,7 +2,10 @@ import React from "react";
 import "./IngredientList.css";
 
 export default function IngredientList({ ingredients, onEdit, onAdd }) {
-  const fmt = (n) => new Intl.NumberFormat("zh-TW").format(n);
+  const fmt = (n) =>
+    new Intl.NumberFormat("zh-TW", { style: "currency", currency: "TWD" }).format(
+      n
+    );
 
   return (
     <div className="ingredientList">
@@ -18,7 +21,10 @@ export default function IngredientList({ ingredients, onEdit, onAdd }) {
           <div
             key={ingredient.id}
             className="ingredientCard"
-            onClick={() => onEdit(ingredient)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(ingredient);
+            }}
           >
             <div className="ingredientName">{ingredient.name}</div>
             <div className="ingredientPrices">
@@ -28,9 +34,7 @@ export default function IngredientList({ ingredients, onEdit, onAdd }) {
               <span className="buyQty">
                 進貨數量: {ingredient.buyQty || 0}
               </span>
-              <span className="unitCost">
-                單位成本: {unitCost.toFixed(2)}
-              </span>
+              <span className="unitCost">單位成本: {fmt(unitCost)}</span>
               <span className="sellPrice">
                 售出價格: {fmt(ingredient.sellPrice)}
               </span>
@@ -45,7 +49,6 @@ export default function IngredientList({ ingredients, onEdit, onAdd }) {
           </div>
         );
       })}
-
       <button className="addButton" onClick={onAdd}>
         +
       </button>

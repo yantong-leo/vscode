@@ -28,7 +28,7 @@ export default function Summary({ records, compareRecords = [] }) {
     return { income: incomeSum, expense: expenseSum, cost: costSum, grossProfit, grossMargin };
   }, [records]);
 
-  const fmt = (n) => new Intl.NumberFormat("zh-TW").format(Math.round(n));
+  const fmt = (n) => new Intl.NumberFormat("zh-TW", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
   return (
     <div className="summary">
@@ -50,7 +50,7 @@ export default function Summary({ records, compareRecords = [] }) {
       </div>
       <div className="summaryCard">
         <div className="summaryLabel">毛利率</div>
-        <div className="summaryValue">{grossMargin.toFixed(2)}%</div>
+        <div className="summaryValue">{fmt(grossMargin)}%</div>
       </div>
 
       {compareRecords.length > 0 && (

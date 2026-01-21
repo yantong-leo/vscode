@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 
 const DEFAULT_CATEGORIES = [
   { name: "小棒腿15元/隻", price: 15, cost: 13.2 },
@@ -27,6 +27,7 @@ export default function RecordForm({ editing, onSubmit, onCancel }) {
   const [isCostManuallyChanged, setIsCostManuallyChanged] = useState(false); // 判斷補貨成本是否被手動修改
   const [note, setNote] = useState("");
   const [newCategory, setNewCategory] = useState(""); // 用於新增分類的輸入框
+  const newCategoryInputRef = useRef(null);
 
   useEffect(() => {
     if (!editing) return;
@@ -91,6 +92,7 @@ export default function RecordForm({ editing, onSubmit, onCancel }) {
     if (newCategory.trim() && !categories.some((c) => c.name === newCategory.trim())) {
       setCategories((prev) => [...prev, { name: newCategory.trim(), price: 0, cost: 0 }]);
       setNewCategory("");
+      setTimeout(() => newCategoryInputRef.current?.focus(), 0);
     }
   };
 
@@ -134,6 +136,7 @@ export default function RecordForm({ editing, onSubmit, onCancel }) {
               type="text"
               placeholder="新增分類"
               value={newCategory}
+              ref={newCategoryInputRef}
               onChange={(e) => setNewCategory(e.target.value)}
               style={{ fontSize: "16px", marginTop: "8px" }}
             />
@@ -159,7 +162,7 @@ export default function RecordForm({ editing, onSubmit, onCancel }) {
               inputMode="numeric"
               min="1"
               value={quantity}
-              onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
+              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))}
               style={{ fontSize: "16px" }}
             />
             <button
@@ -175,7 +178,7 @@ export default function RecordForm({ editing, onSubmit, onCancel }) {
 
         <div className="field">
           <label style={{ fontSize: "18px" }}>金額</label>
-          <input type="number" value={amount} readOnly style={{ fontSize: "16px" }} />
+          <input type="number" value={amount.toFixed(2)} readOnly style={{ fontSize: "16px" }} />
         </div>
 
         <div className="field">
@@ -183,7 +186,7 @@ export default function RecordForm({ editing, onSubmit, onCancel }) {
           <input
             type="number"
             step="0.01" // 支援小數點輸入
-            value={cost}
+            value={cost.toFixed(2)}
             onChange={(e) => {
               setCost(parseFloat(e.target.value) || 0);
               setIsCostManuallyChanged(true); // 標記補貨成本已被手動修改
